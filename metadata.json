@@ -1,0 +1,8 @@
+
+{
+  "name": "CrediGhana AI",
+  "description": "An AI-powered alternative credit scoring and micro-lending platform designed for the unbanked in Ghana, using mobile money and transaction patterns to build financial identity.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
