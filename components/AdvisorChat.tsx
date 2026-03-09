@@ -2,39 +2,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Loader2, Bot } from 'lucide-react';
 import { getFinancialAdvice } from '../services/geminiService';
-import { Transaction, CreditReport, AdvisorMessage, UserProfile } from '../types';
+import { Transaction, CreditReport, AdvisorMessage } from '../types';
 
 interface AdvisorChatProps {
   transactions: Transaction[];
   report: CreditReport | null;
-  user?: UserProfile;
 }
 
-// Ghana region-based greetings
-const getRegionGreeting = (region?: string): string => {
-  if (!region) return "Akwaaba!";
-  
-  const regionLower = region.toLowerCase();
-  
-  // Ewe regions (Volta, Greater Accra, Oti)
-  if (regionLower.includes('volta') || regionLower.includes('greater accra') || regionLower.includes('oti')) {
-    return "Woezor!";
-  }
-  
-  // Northern regions (Northern, North East, Upper East, Upper West, Savannah)
-  if (regionLower.includes('northern') || regionLower.includes('upper east') || regionLower.includes('upper west') || regionLower.includes('savannah')) {
-    return "Saha!";
-  }
-  
-  // Default to Akan greeting (Ashanti, Bono, Central, Eastern, Western, etc.)
-  return "Akwaaba!";
-};
-
-const AdvisorChat: React.FC<AdvisorChatProps> = ({ transactions, report, user }) => {
+const AdvisorChat: React.FC<AdvisorChatProps> = ({ transactions, report }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const greeting = getRegionGreeting(user?.region);
   const [messages, setMessages] = useState<AdvisorMessage[]>([
-    { role: 'model', text: `${greeting} I'm your CrediGhana Advisor. How can I help you grow your business today?` }
+    { role: 'model', text: "Akwaaba! I'm your CrediGhana Advisor. How can I help you grow your business today?" }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);

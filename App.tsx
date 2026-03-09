@@ -8,24 +8,16 @@ import LandingPage from './components/LandingPage';
 import LoginPage from './components/LoginPage';
 import FinanceTools from './components/FinanceTools';
 import WealthCheck from './components/WealthCheck';
-import AdminDashboard from './components/AdminDashboard';
-import AdminLoginModal from './components/AdminLoginModal';
-import { ShieldCheck, BarChart3, Users, Settings as SettingsIcon, Bell, Search, Info, Wallet, X, Gem, Crown, Lock, Smartphone } from 'lucide-react';
+import { ShieldCheck, BarChart3, Users, Settings as SettingsIcon, Bell, Search, Info, Wallet, X, Gem } from 'lucide-react';
 import { Transaction, CreditReport, UserProfile } from './types';
-import { SUPER_ADMIN } from './constants';
 
 const App: React.FC = () => {
   // Navigation & Auth State
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [view, setView] = useState<'landing' | 'login' | 'app' | 'admin'>('landing');
+  const [view, setView] = useState<'landing' | 'login' | 'app'>('landing');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [activeTab, setActiveTab] = useState('Overview');
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // Admin Authentication State
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
-  const [showAdminLoginModal, setShowAdminLoginModal] = useState(false);
-  const [adminLoginError, setAdminLoginError] = useState('');
   
   // Notification Settings
   const [remindersEnabled, setRemindersEnabled] = useState(true);
@@ -42,13 +34,12 @@ const App: React.FC = () => {
   const [user, setUser] = useState<UserProfile>({
     name: "Loveland Klyntin",
     location: "Accra, Ghana",
-    region: "Greater Accra",
     businessType: "Kyntin73 IT – Powering Ideas, Securing Futures",
     memberSince: "Jan 2024",
     isVerified: true,
     ghanaCardNumber: "GHA-724108119-4",
     clearanceStatus: 'Not Requested',
-    momoAccounts: ["0552033463", "0545460689"],
+    momoAccounts: ["0244123456", "0559876543"],
     dataPermissions: {
       momo: true,
       nia: true,
@@ -69,24 +60,6 @@ const App: React.FC = () => {
     setIsLoggedIn(false);
     setView('landing');
     setActiveTab('Overview');
-  };
-
-  const handleAdminLogout = () => {
-    setIsAdminAuthenticated(false);
-    setView('app');
-  };
-
-  // Admin Authentication Handler
-  const handleAdminLogin = (phone: string, pin: string) => {
-    if (phone === SUPER_ADMIN.phone && pin === SUPER_ADMIN.pin) {
-      setIsAdminAuthenticated(true);
-      setShowAdminLoginModal(false);
-      setAdminLoginError('');
-      setView('admin');
-      addNotification("Admin Access Granted", `Welcome, ${SUPER_ADMIN.name}`, "success");
-    } else {
-      setAdminLoginError('Invalid credentials. Access denied.');
-    }
   };
 
   const openAuth = (mode: 'login' | 'signup') => {
@@ -111,7 +84,6 @@ const App: React.FC = () => {
           onNotification={addNotification}
           remindersEnabled={remindersEnabled}
           scoreAlertsEnabled={scoreAlertsEnabled}
-          user={user}
         />;
       case 'Analytics':
         return <Analytics report={currentReport} transactions={transactions} />;
@@ -163,26 +135,7 @@ const App: React.FC = () => {
     );
   }
 
-  // Admin Login Modal - Show before main app
-  if (showAdminLoginModal) {
-    return (
-      <AdminLoginModal 
-        onClose={() => {
-          setShowAdminLoginModal(false);
-          setAdminLoginError('');
-        }}
-        onLogin={handleAdminLogin}
-        error={adminLoginError}
-      />
-    );
-  }
-
-  // Condition 3: Show Admin Dashboard
-  if (view === 'admin') {
-    return <AdminDashboard onLogout={handleAdminLogout} adminName={SUPER_ADMIN.name} adminRole={SUPER_ADMIN.role} />;
-  }
-
-  // Condition 4: Show Main App
+  // Condition 3: Show Main App
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col animate-in fade-in duration-700">
       {/* Global Notifications Portal */}
@@ -277,23 +230,6 @@ const App: React.FC = () => {
             onClick={() => setActiveTab('Partner Banks')} 
           />
           <div className="mt-auto">
-            {isAdminAuthenticated ? (
-              <div 
-                onClick={() => setView('admin')}
-                className={`flex items-center space-x-3 px-6 py-3 cursor-pointer transition-colors group text-slate-500 hover:text-indigo-600 hover:bg-slate-50`}
-              >
-                <span className="transition-transform group-hover:scale-110"><Crown size={20} /></span>
-                <span className="text-sm font-semibold hidden lg:block">Admin Panel</span>
-              </div>
-            ) : (
-              <div 
-                onClick={() => setShowAdminLoginModal(true)}
-                className={`flex items-center space-x-3 px-6 py-3 cursor-pointer transition-colors group text-slate-500 hover:text-amber-600 hover:bg-amber-50`}
-              >
-                <span className="transition-transform group-hover:scale-110"><Lock size={20} /></span>
-                <span className="text-sm font-semibold hidden lg:block">Admin Access</span>
-              </div>
-            )}
             <SidebarItem 
               icon={<SettingsIcon size={20} />} 
               label="Settings" 

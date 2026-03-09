@@ -44,7 +44,6 @@ interface DashboardProps {
   onNotification?: (title: string, message: string, type: 'info' | 'success' | 'warning') => void;
   remindersEnabled?: boolean;
   scoreAlertsEnabled?: boolean;
-  user?: UserProfile;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ 
@@ -52,10 +51,9 @@ const Dashboard: React.FC<DashboardProps> = ({
   onReportUpdate, 
   onNotification,
   remindersEnabled = true,
-  scoreAlertsEnabled = true,
-  user: userProp
+  scoreAlertsEnabled = true
 }) => {
-  const defaultUser: UserProfile = {
+  const [user, setUser] = useState<UserProfile>({
     name: "Loveland Klyntin",
     location: "Accra, Ghana",
     businessType: "Kyntin73 IT – Powering Ideas, Securing Futures",
@@ -63,9 +61,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     isVerified: true,
     ghanaCardNumber: "GHA-724108119-4",
     clearanceStatus: 'Not Requested'
-  };
-
-  const user = userProp || defaultUser;
+  });
 
   const [transactions, setTransactions] = useState<Transaction[]>([
     { id: '1', type: 'MoMo', amount: 1500, date: '2024-05-01', description: 'Business Sales - MTN MoMo', status: 'Completed', isPositive: true },
@@ -150,7 +146,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     setClearing(true);
     setTimeout(() => {
       setClearing(false);
-      // Note: User state update would need to be handled by parent component via onUserUpdate
+      setUser(prev => ({ ...prev, clearanceStatus: 'Verified' }));
       onNotification?.("Clearance Verified", "Your financial clearance certificate has been issued and linked to your Ghana Card.", "success");
     }, 4000);
   };
@@ -215,7 +211,7 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 relative animate-in fade-in duration-500">
-      <AdvisorChat transactions={transactions} report={report} user={user} />
+      <AdvisorChat transactions={transactions} report={report} />
       
       {/* Profile Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white rounded-[2rem] shadow-sm p-8 border border-slate-100">

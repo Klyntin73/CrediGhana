@@ -13,11 +13,3 @@ export const MOCK_REVIEWS = [
   "Helped me grow my textile business when banks said no.",
   "Fair interest rates for small traders."
 ];
-
-// Super Admin Credentials
-export const SUPER_ADMIN = {
-  phone: '0552033463',
-  pin: '7319',
-  name: 'Super Admin',
-  role: 'Super Administrator'
-};
