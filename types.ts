@@ -50,12 +50,11 @@ export interface WealthProfile {
 export interface UserProfile {
   name: string;
   location: string;
-  region?: string; // Ghana region for localized greetings
   businessType: string;
   memberSince: string;
   isVerified?: boolean;
   ghanaCardNumber?: string;
-  clearanceStatus?: 'Verified' | 'Pending' | 'Not Requested' | 'Suspended' | 'Revoked';
+  clearanceStatus?: 'Verified' | 'Pending' | 'Not Requested';
   momoAccounts?: string[];
   dataPermissions?: {
     momo: boolean;
@@ -101,25 +100,4 @@ export interface VirtualCard {
   type: 'VISA' | 'Mastercard';
   status: 'Active' | 'Frozen';
   limit: number;
-}
-
-// User Roles for Admin
-export type UserRole = 'user' | 'admin' | 'super_admin';
-
-export interface AdminStats {
-  totalUsers: number;
-  totalLoans: number;
-  activeLoans: number;
-  defaultedLoans: number;
-  totalTransactionVolume: number;
-  pendingApprovals: number;
-}
-
-export interface SystemLog {
-  id: string;
-  action: string;
-  userId: string;
-  userName: string;
-  timestamp: string;
-  details: string;
 }

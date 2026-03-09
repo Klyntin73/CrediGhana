@@ -79,16 +79,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, initialMo
     }, 1500);
   };
 
-  // Simulate sending credentials via SMS
-  const sendCredentialsSms = (phone: string, pin: string) => {
-    console.log(`[SMS] To: ${phone} - Welcome! Your CrediGhana PIN is: ${pin}`);
-  };
-
-  // Simulate sending credentials via Email
-  const sendCredentialsEmail = (name: string, email: string, pin: string) => {
-    console.log(`[EMAIL] To: ${email} - Welcome ${name}! Your CrediGhana PIN is: ${pin}`);
-  };
-
   const handleOtpVerify = (e: React.FormEvent) => {
     e.preventDefault();
     const fullOtp = otpValue.join('');
@@ -104,17 +94,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, initialMo
     setTimeout(() => {
       setLoading(false);
       if (mode === 'signup') {
-        // Generate a PIN for the new user
-        const userPin = Math.floor(1000 + Math.random() * 9000).toString();
-        
-        // Send credentials via SMS and Email
-        sendCredentialsSms(form.phone, userPin);
-        sendCredentialsEmail(form.name, form.ghanaCard.replace('GHA-', '') + '@example.com', userPin);
-        
         setSuccess(true);
         setTimeout(() => {
           onLoginSuccess();
-        }, 2500);
+        }, 2000);
       } else {
         onLoginSuccess();
       }

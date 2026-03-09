@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CrediGhana AI</string>
+    <string name="title_activity_main">CrediGhana AI</string>
+    <string name="package_name">com.credighana.app</string>
+    <string name="custom_url_scheme">com.credighana.app</string>
+</resources>
